@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofertas Especiales - SkyJourney</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="public/css/styles.css">
+    <style>
+        .hero-ofertas {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            margin-bottom: 3rem;
+        }
+        .hero-ofertas h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .hero-ofertas p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        .search-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .search-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .search-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .search-tab.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 1rem;
+        }
+        .form-group {
+            margin-bottom: 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .btn-search {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .btn-search:hover {
+            background-color: #1d4ed8;
+        }
+        .ofertas-container {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .section-title h2 {
+            font-size: 2rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+        .section-title p {
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .ofertas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .oferta-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .oferta-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .oferta-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .oferta-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .oferta-content {
+            padding: 1.5rem;
+        }
+        .oferta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .oferta-destino h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+        }
+        .oferta-ruta {
+            display: flex;
+            align-items: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .oferta-ruta i {
+            margin: 0 0.5rem;
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+        .oferta-precio {
+            text-align: right;
+        }
+        .precio-ahora {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+            line-height: 1;
+        }
+        .precio-antiguo {
+            text-decoration: line-through;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+        .oferta-detalles {
+            margin-bottom: 1.5rem;
+        }
+        .detalle-item {
+            display: flex;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .detalle-item i {
+            color: #3b82f6;
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        .btn-oferta {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-oferta:hover {
+            background-color: #1d4ed8;
+        }
+        .newsletter {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 4rem 1rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .newsletter h2 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+        .newsletter p {
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px 0 0 6px;
+            font-size: 1rem;
+        }
+        .newsletter-form button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            padding: 0 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .newsletter-form button:hover {
+            background-color: #1d4ed8;
+        }
+        @media (max-width: 1024px) {
+            .search-form {
+                grid-template-columns: 1fr 1fr;
+            }
+            .ofertas-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            .search-box {
+                padding: 1rem;
+            }
+            .search-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+            .search-tab {
+                white-space: nowrap;
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+            }
+            .ofertas-grid {
+                grid-template-columns: 1fr;
+            }
+            .newsletter-form {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .newsletter-form input,
+            .newsletter-form button {
+                border-radius: 6px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-plane"></i>
+                    <span>SkyJourney</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/vuelos.html">Vuelos</a></li>
+                <li><a href="/ofertas.html" class="active">Ofertas</a></li>
+                <li><a href="/contacto.html">Contacto</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="/login.html" class="btn btn-outline">Iniciar sesión</a>
+                <a href="/registro.html" class="btn btn-primary">Registrarse</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-ofertas">
+        <h1>Las Mejores Ofertas en Vuelos</h1>
+        <p>Descubre increíbles descuentos en vuelos nacionales e internacionales. ¡Reserva ahora y ahorra en tus próximas vacaciones!</p>
+        
+        <div class="search-box">
+            <div class="search-tabs">
+                <div class="search-tab active">Vuelos</div>
+                <div class="search-tab">Paquetes</div>
+                <div class="search-tab">Hoteles</div>
+                <div class="search-tab">Autos</div>
+            </div>
+            
+            <form class="search-form">
+                <div class="form-group">
+                    <label>Origen</label>
+                    <input type="text" placeholder="Ciudad o aeropuerto" value="Buenos Aires (BUE)">
+                </div>
+                <div class="form-group">
+                    <label>Destino</label>
+                    <input type="text" placeholder="A dónde quieres ir?">
+                </div>
+                <div class="form-group">
+                    <label>Fechas</label>
+                    <input type="text" placeholder="Ida y vuelta" onfocus="(this.type='date')">
+                </div>
+                <button type="submit" class="btn-search">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <div class="ofertas-container">
+        <div class="section-title">
+            <h2>Ofertas Destacadas</h2>
+            <p>Descubre nuestras mejores ofertas en vuelos nacionales e internacionales con descuentos exclusivos.</p>
+        </div>
+
+        <div class="ofertas-grid">
+            <!-- Oferta 1 -->
+            <div class="oferta-card">
+                <div class="oferta-image" style="background-image: url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <span class="oferta-badge">-30%</span>
+                </div>
+                <div class="oferta-content">
+                    <div class="oferta-header">
+                        <div class="oferta-destino">
+                            <h3>Madrid, España</h3>
+                            <div class="oferta-ruta">
+                                <span>Buenos Aires</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Madrid</span>
+                            </div>
+                        </div>
+                        <div class="oferta-precio">
+                            <div class="precio-ahora">$1,199</div>
+                            <div class="precio-antiguo">$1,799</div>
+                        </div>
+                    </div>
+                    <div class="oferta-detalles">
+                        <div class="detalle-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Válido hasta: 30/09/2025</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-plane"></i>
+                            <span>Vuelo directo • Incluye equipaje de bodega</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="far fa-clock"></i>
+                            <span>Duración del viaje: 11h 45m</span>
+                        </div>
+                    </div>
+                    <button class="btn-oferta">Ver oferta</button>
+                </div>
+            </div>
+
+            <!-- Oferta 2 -->
+            <div class="oferta-card">
+                <div class="oferta-image" style="background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <span class="oferta-badge">-25%</span>
+                </div>
+                <div class="oferta-content">
+                    <div class="oferta-header">
+                        <div class="oferta-destino">
+                            <h3>Río de Janeiro, Brasil</h3>
+                            <div class="oferta-ruta">
+                                <span>Buenos Aires</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Río de Janeiro</span>
+                            </div>
+                        </div>
+                        <div class="oferta-precio">
+                            <div class="precio-ahora">$349</div>
+                            <div class="precio-antiguo">$499</div>
+                        </div>
+                    </div>
+                    <div class="oferta-detalles">
+                        <div class="detalle-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Válido hasta: 15/12/2025</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-plane"></i>
+                            <span>Vuelo directo • Incluye equipaje de mano</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="far fa-clock"></i>
+                            <span>Duración del viaje: 2h 30m</span>
+                        </div>
+                    </div>
+                    <button class="btn-oferta">Ver oferta</button>
+                </div>
+            </div>
+
+            <!-- Oferta 3 -->
+            <div class="oferta-card">
+                <div class="oferta-image" style="background-image: url('https://images.unsplash.com/photo-1538970272646-f61fabb3be44?ixlib=rb-4.0.3&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <span class="oferta-badge">-20%</span>
+                </div>
+                <div class="oferta-content">
+                    <div class="oferta-header">
+                        <div class="oferta-destino">
+                            <h3>Miami, Estados Unidos</h3>
+                            <div class="oferta-ruta">
+                                <span>Buenos Aires</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Miami</span>
+                            </div>
+                        </div>
+                        <div class="oferta-precio">
+                            <div class="precio-ahora">$899</div>
+                            <div class="precio-antiguo">$1,199</div>
+                        </div>
+                    </div>
+                    <div class="oferta-detalles">
+                        <div class="detalle-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Válido hasta: 30/11/2025</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-plane"></i>
+                            <span>1 escala • Incluye equipaje de bodega</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="far fa-clock"></i>
+                            <span>Duración del viaje: 9h 15m</span>
+                        </div>
+                    </div>
+                    <button class="btn-oferta">Ver oferta</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <h2>Última Hora</h2>
+            <p>Ofertas con salidas en los próximos días. ¡Reserva ahora antes de que se agoten!</p>
+        </div>
+
+        <div class="ofertas-grid">
+            <!-- Oferta 4 -->
+            <div class="oferta-card">
+                <div class="oferta-image" style="background-image: url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <span class="oferta-badge">Últimos asientos</span>
+                </div>
+                <div class="oferta-content">
+                    <div class="oferta-header">
+                        <div class="oferta-destino">
+                            <h3>Barcelona, España</h3>
+                            <div class="oferta-ruta">
+                                <span>Buenos Aires</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Barcelona</span>
+                            </div>
+                        </div>
+                        <div class="oferta-precio">
+                            <div class="precio-ahora">$1,099</div>
+                            <div class="precio-antiguo">$1,599</div>
+                        </div>
+                    </div>
+                    <div class="oferta-detalles">
+                        <div class="detalle-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Salida: 10/07/2025 - 15/07/2025</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-plane"></i>
+                            <span>1 escala • Incluye equipaje de bodega</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-fire"></i>
+                            <span>¡Solo quedan 3 asientos a este precio!</span>
+                        </div>
+                    </div>
+                    <button class="btn-oferta">Reservar ahora</button>
+                </div>
+            </div>
+
+            <!-- Oferta 5 -->
+            <div class="oferta-card">
+                <div class="oferta-image" style="background-image: url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <span class="oferta-badge">Oferta relámpago</span>
+                </div>
+                <div class="oferta-content">
+                    <div class="oferta-header">
+                        <div class="oferta-destino">
+                            <h3>París, Francia</h3>
+                            <div class="oferta-ruta">
+                                <span>Buenos Aires</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>París</span>
+                            </div>
+                        </div>
+                        <div class="oferta-precio">
+                            <div class="precio-ahora">$1,299</div>
+                            <div class="precio-antiguo">$1,899</div>
+                        </div>
+                    </div>
+                    <div class="oferta-detalles">
+                        <div class="detalle-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Salida: 20/07/2025 - 31/07/2025</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-plane"></i>
+                            <span>1 escala • Incluye equipaje de bodega</span>
+                        </div>
+                        <div class="detalle-item">
+                            <i class="fas fa-bolt"></i>
+                            <span>¡Oferta por tiempo limitado! 12h restantes</span>
+                        </div>
+                    </div>
+                    <button class="btn-oferta">Reservar ahora</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>¡No te pierdas nuestras ofertas!</h2>
+            <p>Suscríbete a nuestro boletín y recibe las mejores ofertas de vuelos directamente en tu correo electrónico.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <button type="submit">Suscribirse</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SkyJourney</h3>
+                <p>Tu compañero de viaje confiable para encontrar las mejores ofertas de vuelos.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/vuelos.html">Vuelos</a></li>
+                    <li><a href="/ofertas.html">Ofertas</a></li>
+                    <li><a href="/contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> info@skyjourney.com</p>
+                <p><i class="fas fa-phone"></i> +54 11 1234-5678</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SkyJourney. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cambiar pestañas de búsqueda
+        const tabs = document.querySelectorAll('.search-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Botón de oferta
+        const ofertaBtns = document.querySelectorAll('.btn-oferta');
+        ofertaBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const destino = this.closest('.oferta-card').querySelector('h3').textContent;
+                alert(`Redirigiendo a la reserva para ${destino}...`);
+                // Aquí iría la lógica para redirigir a la página de reserva
+            });
+        });
+
+        // Suscripción al newsletter
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                alert(`¡Gracias por suscribirte con ${email}! Pronto recibirás nuestras ofertas.`);
+                this.reset();
+            });
+        }
+    </script>
+</body>
+</html>
