@@ -10,6 +10,7 @@ export const AppDataSource = new DataSource({
     port: 5432,
     database: 'Skyora',
     entities: [User],
-    logging: true,
+    logging: false,
     synchronize: true,
+    dropSchema: true,
 })

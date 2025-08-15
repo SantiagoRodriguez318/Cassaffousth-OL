@@ -93,6 +93,9 @@ ul {
     font-size: 1.5rem;
     font-weight: 700;
 }
+.logo span{
+    text-decoration: none;
+}
 
 .logo i {
     margin-right: 0.5rem;
