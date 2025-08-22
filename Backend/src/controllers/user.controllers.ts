@@ -1,25 +1,29 @@
 import {Request, Response} from 'express';
 import {User} from '../entities/user';
 import { error } from 'console';
+import { TipoDNI } from '../enum';
 
-export const createUser = async (req:Request, res:Response) =>{
+export const crearUsuario = async (req:Request, res:Response) =>{
 try {
-        const { Dni , firstname, lastname , email } = req.body;
+        const { Dni , TipoDNI, Nombre , Apellido , Email , Contraseña , Telefono } = req.body;
     
     
     const user = new User();
     user.Dni = Dni;
-    user.firstname = firstname;
-    user.lastname = lastname;
-    user.email = email;
+    user.TipoDNI = TipoDNI
+    user.Nombre = Nombre;
+    user.Apellido = Apellido;
+    user.Email = Email;
+    user.Contraseña = Contraseña
+    user.Telefono = Telefono;
     
-    const existingMail = await User.findOne({ where: [{ email }, { Dni }] });
+    const existingMail = await User.findOne({ where: [{ Email }, { Dni }, { Telefono }] });
     if (existingMail) {
-        res.status(400).json({ message: 'El email o DNI ya están registrados' });
+        res.status(400).json({ message: 'El email, DNI o número de teléfono ya están registrados' });
         return;
     }
     
-    if (!user.lastname || !user.firstname) throw new Error
+    if (!user.Nombre || !user.Apellido) throw new Error
     await user.save()
     
     console.log(user);
@@ -34,7 +38,7 @@ try {
     }
 };
 
-export const getUsers = async (req:Request, res:Response) => {
+export const consultarUsuarios = async (req:Request, res:Response) => {
 
     try 
     {
@@ -49,7 +53,7 @@ export const getUsers = async (req:Request, res:Response) => {
     }
 };
 
-export const updateUser = async (req:Request, res:Response) =>{
+export const actualizarUsuario = async (req:Request, res:Response) =>{
     try {
         const {id} = req.params;
         const user = await User.findOneBy({id: parseInt(req.params.id!, 10)})
@@ -57,10 +61,12 @@ export const updateUser = async (req:Request, res:Response) =>{
 
         if (!user) return res.status(404).json({message: 'El usuario no existe.'})
         await User.update({id: parseInt(id!, 10)}, {
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
+            Nombre: req.body.Nombre,
+            Apellido: req.body.Apellido,
             Dni: req.body.Dni,
-            email: req.body.email,
+            TipoDNI: req.body.TipoDNI,
+            Email: req.body.Email,
+            Telefono: req.body.Telefono,
         })
 
         return res.sendStatus(204)
@@ -71,7 +77,7 @@ export const updateUser = async (req:Request, res:Response) =>{
             }
 }
 
-export const deleteUser = async (req:Request, res:Response) =>{
+export const borrarUsuario = async (req:Request, res:Response) =>{
 
     try {
             const {id} = req.params;
@@ -89,7 +95,7 @@ export const deleteUser = async (req:Request, res:Response) =>{
     }
 }
 
-export const getUser = async (req:Request, res:Response) => {
+export const consultarUsuario = async (req:Request, res:Response) => {
     try {
         const {id} = req.params;
 

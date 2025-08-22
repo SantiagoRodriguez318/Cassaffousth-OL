@@ -7,34 +7,47 @@ import {
     PrimaryGeneratedColumn,
     } from "typeorm";
 
+    import { IsNumber, IsString, MaxLength} from 'class-validator';
+    import { TipoDNI } from '../enum';
+
+
 @Entity('user')
+
 export class User extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;
     
     @Column({unique: true, nullable: false})
+    @IsNumber()
+    @MaxLength(10, { message: 'El DNI no puede exceder los 10 dígitos.' })
     Dni: number;
 
+    @Column({type: 'enum', enum: TipoDNI, default: TipoDNI.DNI})  // Columna para el tipo de DNI
+    TipoDNI: string;
+
     @Column({nullable: false})
-    firstname :string;
+    Nombre: string;
     
     @Column({nullable: false})
-    lastname :string;
+    Apellido: string;
     
     @Column({unique: true, nullable: true})
-    email :string;
+    @IsString()
+    @MaxLength(100, { message: 'El email no puede exceder los 100 caracteres.' })
+    Email: string;
 
-    @Column({
-        default:true
-    })
+    @Column({nullable: false})
+    @IsString()
+    Contraseña: string;
+
+    @Column({nullable: false, unique: true})
+    @IsNumber()
+    @MaxLength(15, { message: 'El número de teléfono no puede exceder los 15 dígitos.' })
+    Telefono: number;
+
+    @Column({default:true})
     active :boolean;
-
-    @Column({ type: 'boolean', default: false })
-    confirmacion: boolean;
-
-    @Column({ type: 'varchar', length: 6, nullable: true })
-    confirmationCode: string | null; // <-- Nuevo campo para el código
 
     @CreateDateColumn()
     createdAt: Date;
@@ -42,10 +55,7 @@ export class User extends BaseEntity{
     @UpdateDateColumn()
     updatedAt: Date;
 
-
-    @Column({
-        default:false
-    })
-    Rol: boolean;
+    @Column({default:'Usuario'})
+    Rol: string;
 
 }   

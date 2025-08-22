@@ -1,16 +1,16 @@
 import {Router} from 'express';
-import { createUser , deleteUser, getUser, getUsers , updateUser } from '../controllers/user.controllers'
-//import { rolmiddleware } from '../middleware/rol.middleware';
+import { crearUsuario , consultarUsuarios , consultarUsuario , actualizarUsuario , borrarUsuario } from '../controllers/user.controllers'
+
 const router = Router()
 
-router.post('/users', createUser);
+router.post('/users', crearUsuario);
 
-router.get('/users', getUsers);
+router.get('/users', consultarUsuarios);
 
-router.get('/users/:id', getUser);
+router.get('/users/:id', consultarUsuario);
 
-router.put('/users/:id', updateUser);
+router.put('/users/:id', actualizarUsuario);
 
-router.delete('/users/:id', deleteUser);
+router.delete('/users/:id', borrarUsuario);
 
 export default router
