@@ -1,9 +1,10 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import { validateEmail , validatePhone } from '../middlewares/user.middleware';
 import { crearUsuario , consultarUsuarios , consultarUsuario , actualizarUsuario , borrarUsuario } from '../controllers/user.controllers'
 
 const router = Router()
 
-router.post('/users', crearUsuario);
+router.post('/users', validateEmail, validatePhone, crearUsuario);
 
 router.get('/users', consultarUsuarios);
 

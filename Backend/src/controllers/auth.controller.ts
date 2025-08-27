@@ -72,3 +72,16 @@ export const Login = async (req: Request, res: Response) => {
         }
     }
 };
+export const userInfo = async (req: Request, res: Response) => {
+        try {
+        const { userId }= req.body.user;
+        const user = await User.findOneBy ({ id: userId });
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        } 
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: 'Error del servidor' });
+        }
+    }
+}

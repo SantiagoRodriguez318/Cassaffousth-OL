@@ -1,12 +1,9 @@
 import {Request, Response} from 'express';
 import {User} from '../entities/user';
-import { error } from 'console';
-import { TipoDNI } from '../enum';
 
 export const crearUsuario = async (req:Request, res:Response) =>{
 try {
-        const { Dni , TipoDNI, Nombre , Apellido , Email , Contraseña , Telefono } = req.body;
-    
+    const { Dni , TipoDNI, Nombre , Apellido , Email , Contraseña , Telefono } = req.body;
     
     const user = new User();
     user.Dni = Dni;
@@ -17,13 +14,15 @@ try {
     user.Contraseña = Contraseña
     user.Telefono = Telefono;
     
-    const existingMail = await User.findOne({ where: [{ Email }, { Dni }, { Telefono }] });
-    if (existingMail) {
-        res.status(400).json({ message: 'El email, DNI o número de teléfono ya están registrados' });
+    const existingInfo = await User.findOne({ where: [ { Dni },{ Telefono }] });
+    if (existingInfo) {
+        res.status(400).json({ message: 'DNI o número de teléfono ya están registrados' });
         return;
     }
     
-    if (!user.Nombre || !user.Apellido) throw new Error
+    if (!user.Nombre || !user.Apellido) {
+        return res.status(400).json ( { message: 'Complete los campos Nombre y apellido' } )
+    }
     await user.save()
     
     console.log(user);
@@ -69,7 +68,8 @@ export const actualizarUsuario = async (req:Request, res:Response) =>{
             Telefono: req.body.Telefono,
         })
 
-        return res.sendStatus(204)
+        return res.json({message: 'El usuario fue modificado correctamente.'});
+        
         } catch (error) 
             {
                 if (error instanceof Error){
@@ -86,7 +86,7 @@ export const borrarUsuario = async (req:Request, res:Response) =>{
             if (resultado.affected === 0 ) {
                 return res.status(404).json ({message: 'Usuario no encontrado, no se pudo eliminar.'})
             }
-            return res.sendStatus(204);
+            return res.json({message: 'El usuario ha sido eliminado correctamente.'});
         } 
         catch (error) {
         if (error instanceof Error){

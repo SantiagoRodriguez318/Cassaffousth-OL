@@ -42,9 +42,8 @@ export class User extends BaseEntity{
     Contraseña: string;
 
     @Column({nullable: false, unique: true})
-    @IsNumber()
-    @MaxLength(15, { message: 'El número de teléfono no puede exceder los 15 dígitos.' })
-    Telefono: number;
+    @IsString()
+    Telefono: string;
 
     @Column({default:true})
     active :boolean;
